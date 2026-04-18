@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{nom}}</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Reset & base ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 210mm;
+      background: #0e0f11;
+      color: #f0ede6;
+      font-family: 'DM Mono', 'Courier New', monospace;
+      font-size: 9.5pt;
+      line-height: 1.6;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ─── Page shell ────────────────────────────────────────────── */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 14mm 14mm 18mm 14mm;
+      background: #0e0f11;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* ─── Header ────────────────────────────────────────────────── */
+    .header {
+      border-bottom: 1px solid #2e3038;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .recipe-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 26pt;
+      font-weight: 400;
+      line-height: 1.1;
+      color: #f0ede6;
+      letter-spacing: -0.02em;
+      flex: 1;
+    }
+
+    .header-meta {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .masse-badge {
+      display: inline-block;
+      background: #1e2026;
+      border: 1px solid #3a3d47;
+      color: #c9c0b0;
+      font-family: 'DM Mono', monospace;
+      font-size: 8pt;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+
+    .masse-value {
+      display: block;
+      font-size: 14pt;
+      font-weight: 500;
+      color: #f0ede6;
+      letter-spacing: -0.01em;
+    }
+
+    .tags-row {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #1a1c22;
+      border: 1px solid #2e3038;
+      color: #8a8880;
+      font-family: 'DM Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    /* ─── Source strip ───────────────────────────────────────────── */
+    .source-strip {
+      font-size: 7.5pt;
+      color: #5a5c63;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .source-strip span {
+      color: #7a7c85;
+    }
+
+    /* ─── Body 2-col ─────────────────────────────────────────────── */
+    .body-cols {
+      display: flex;
+      gap: 0;
+      flex: 1;
+    }
+
+    /* Left column — ingrédients */
+    .col-left {
+      width: 38%;
+      padding-right: 14px;
+      border-right: 1px solid #2e3038;
+      flex-shrink: 0;
+    }
+
+    /* Right column — étapes */
+    .col-right {
+      flex: 1;
+      padding-left: 14px;
+    }
+
+    /* ─── Section titles ─────────────────────────────────────────── */
+    .section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #5a5c63;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #1e2026;
+    }
+
+    /* ─── Ingredients table ───────────────────────────────────────── */
+    .ingredients-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .ingredients-table tr {
+      border-bottom: 1px solid #1a1c22;
+    }
+
+    .ingredients-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .ingredients-table td {
+      padding: 5px 0;
+      vertical-align: top;
+      color: #d0cdc6;
+      font-size: 8.5pt;
+      line-height: 1.4;
+    }
+
+    .ingredients-table td.qty {
+      width: 52px;
+      color: #8a8880;
+      font-size: 8pt;
+      white-space: nowrap;
+      padding-right: 8px;
+    }
+
+    .ingredients-table td.unit {
+      width: 32px;
+      color: #6a6c73;
+      font-size: 7.5pt;
+      padding-right: 6px;
+    }
+
+    .ingredients-table td.name {
+      color: #e0ddd6;
+    }
+
+    /* ─── Steps ──────────────────────────────────────────────────── */
+    .steps-container {
+      counter-reset: step-counter;
+    }
+
+    .step {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      counter-increment: step-counter;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      background: #1e2026;
+      border: 1px solid #2e3038;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 7pt;
+      color: #5a5c63;
+      margin-top: 1px;
+    }
+
+    .step-text {
+      flex: 1;
+      color: #c0bdb6;
+      font-size: 9pt;
+      line-height: 1.65;
+    }
+
+    /* ─── Notes ──────────────────────────────────────────────────── */
+    .notes-block {
+      margin-top: 18px;
+      background: #141618;
+      border-left: 2px solid #3a3d47;
+      padding: 10px 12px;
+      border-radius: 0 3px 3px 0;
+    }
+
+    .notes-block .section-title {
+      margin-bottom: 6px;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .notes-text {
+      color: #8a8880;
+      font-size: 8.5pt;
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    /* ─── Footer ─────────────────────────────────────────────────── */
+    .footer {
+      margin-top: 16px;
+      padding-top: 10px;
+      border-top: 1px solid #1e2026;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 8pt;
+      color: #2e3038;
+      letter-spacing: 0.04em;
+    }
+
+    .footer-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 7.5pt;
+      color: #3a3d47;
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── Print ──────────────────────────────────────────────────── */
+    @media print {
+      html, body { background: #0e0f11; }
+      .page { page-break-after: always; }
+      .page:last-child { page-break-after: avoid; }
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <h1 class="recipe-title">{{nom}}</h1>
+        <div class="header-meta">
+          <div class="masse-badge">
+            Masse totale
+            <span class="masse-value">{{masse_totale}} g</span>
+          </div>
+        </div>
+      </div>
+      <div class="tags-row">{{tags}}</div>
+    </header>
+
+    <!-- Source -->
+    <div class="source-strip">Source&nbsp;: <span>{{source}}</span></div>
+
+    <!-- Body 2-col -->
+    <div class="body-cols">
+
+      <!-- Left — Ingrédients -->
+      <div class="col-left">
+        <div class="section-title">Ingrédients</div>
+        <table class="ingredients-table">
+          <tbody>
+            {{ingredients}}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Right — Étapes + Notes -->
+      <div class="col-right">
+        <div class="section-title">Préparation</div>
+        <div class="steps-container">
+          {{etapes}}
+        </div>
+
+        <!-- Notes -->
+        <div class="notes-block">
+          <div class="section-title">Notes</div>
+          <div class="notes-text">{{notes}}</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span class="footer-brand">RecipeLog</span>
+      <span class="footer-date">{{date}}</span>
+    </footer>
+
+  </div>
+</body>
+</html>

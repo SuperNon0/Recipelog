@@ -1,0 +1,55 @@
+/*
+ * RecipeLog — Template Moderne
+ * style.css — règles complémentaires pour impressions multi-pages
+ * Le CSS principal est inline dans index.html (pour Puppeteer).
+ * Ce fichier ajoute les règles de saut de page et les ajustements
+ * spécifiques aux cahiers de plusieurs recettes enchaînées.
+ */
+
+/* ── Page breaks ── */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  .page {
+    page-break-after: always;
+    page-break-inside: avoid;
+    break-after: page;
+    break-inside: avoid;
+  }
+
+  .page:last-child {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* Éviter les coupures au milieu d'une étape */
+  .step {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Éviter la séparation du bloc ingrédients */
+  .ingredients-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  html,
+  body,
+  .page {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: #ffffff !important;
+  }
+}
+
+/* ── Séparateur entre recettes dans un cahier HTML ── */
+@media screen {
+  .page {
+    margin-bottom: 24px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  }
+}

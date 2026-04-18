@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{nom}}</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Reset & base ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 210mm;
+      background: #ffffff;
+      color: #111111;
+      font-family: 'DM Mono', 'Courier New', monospace;
+      font-size: 9.5pt;
+      line-height: 1.7;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ─── Page shell ────────────────────────────────────────────── */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 18mm 18mm 16mm 18mm;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* ─── Eyebrow ────────────────────────────────────────────────── */
+    .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #999999;
+      margin-bottom: 10px;
+    }
+
+    /* ─── Title block ────────────────────────────────────────────── */
+    .title-block {
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .recipe-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 42pt;
+      font-weight: 400;
+      line-height: 1.0;
+      color: #111111;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .title-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .masse-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f5f5f5;
+      border-radius: 100px;
+      padding: 4px 14px 4px 10px;
+    }
+
+    .masse-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #999999;
+    }
+
+    .masse-value {
+      font-family: 'DM Mono', monospace;
+      font-size: 10pt;
+      font-weight: 500;
+      color: #111111;
+    }
+
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #666666;
+      border: 1px solid #dddddd;
+      border-radius: 100px;
+      padding: 2px 10px;
+    }
+
+    /* ─── Source ─────────────────────────────────────────────────── */
+    .source-line {
+      font-family: 'DM Mono', monospace;
+      font-size: 7.5pt;
+      color: #aaaaaa;
+      letter-spacing: 0.04em;
+      margin-bottom: 28px;
+    }
+
+    .source-line span {
+      color: #666666;
+    }
+
+    /* ─── Section label ──────────────────────────────────────────── */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #bbbbbb;
+      margin-bottom: 12px;
+    }
+
+    /* ─── Ingredients ────────────────────────────────────────────── */
+    .ingredients-section {
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .ingredients-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .ingredients-list table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .ingredients-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .ingredients-table tr {
+      border-bottom: 1px solid #f5f5f5;
+    }
+
+    .ingredients-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .ingredients-table td {
+      padding: 5px 0;
+      vertical-align: top;
+      font-family: 'DM Mono', monospace;
+      font-size: 8.5pt;
+      line-height: 1.4;
+    }
+
+    .ingredients-table td.qty {
+      width: 48px;
+      color: #999999;
+      font-size: 8pt;
+      white-space: nowrap;
+      padding-right: 6px;
+    }
+
+    .ingredients-table td.unit {
+      width: 30px;
+      color: #bbbbbb;
+      font-size: 7.5pt;
+      padding-right: 8px;
+    }
+
+    .ingredients-table td.name {
+      color: #222222;
+    }
+
+    /* ─── Steps ──────────────────────────────────────────────────── */
+    .steps-section {
+      margin-bottom: 28px;
+    }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f5f5f5;
+    }
+
+    .step:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      font-family: 'DM Serif Display', serif;
+      font-size: 22pt;
+      color: #eeeeee;
+      line-height: 1.1;
+      width: 30px;
+      text-align: right;
+    }
+
+    .step-text {
+      flex: 1;
+      color: #333333;
+      font-size: 9.5pt;
+      line-height: 1.7;
+      padding-top: 4px;
+    }
+
+    /* ─── Notes ──────────────────────────────────────────────────── */
+    .notes-section {
+      margin-top: 24px;
+      padding: 16px 20px;
+      background: #fafafa;
+      border-radius: 4px;
+    }
+
+    .notes-text {
+      color: #666666;
+      font-size: 8.5pt;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    /* ─── Footer ─────────────────────────────────────────────────── */
+    .footer {
+      margin-top: auto;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 10pt;
+      color: #dddddd;
+    }
+
+    .footer-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 7.5pt;
+      color: #cccccc;
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── Print ──────────────────────────────────────────────────── */
+    @media print {
+      html, body { background: #ffffff; }
+      .page { page-break-after: always; }
+      .page:last-child { page-break-after: avoid; }
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Eyebrow -->
+    <div class="eyebrow">RecipeLog — Recette</div>
+
+    <!-- Title block -->
+    <div class="title-block">
+      <h1 class="recipe-title">{{nom}}</h1>
+      <div class="title-meta">
+        <div class="masse-pill">
+          <span class="masse-label">Total</span>
+          <span class="masse-value">{{masse_totale}} g</span>
+        </div>
+        <div class="tags-row">{{tags}}</div>
+      </div>
+    </div>
+
+    <!-- Source -->
+    <div class="source-line">Source&nbsp;: <span>{{source}}</span></div>
+
+    <!-- Ingredients -->
+    <div class="ingredients-section">
+      <div class="section-label">Ingrédients</div>
+      <table class="ingredients-table">
+        <tbody>
+          {{ingredients}}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps-section">
+      <div class="section-label">Préparation</div>
+      <div class="steps-container">
+        {{etapes}}
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="notes-section">
+      <div class="section-label">Notes</div>
+      <div class="notes-text">{{notes}}</div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span class="footer-brand">RecipeLog</span>
+      <span class="footer-date">{{date}}</span>
+    </footer>
+
+  </div>
+</body>
+</html>
